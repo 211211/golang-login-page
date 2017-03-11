@@ -13,8 +13,8 @@ import (
 const indexPage = `
 <h1>Login</h1>
 <form method="post" action="/login">
-    <label for="name">User name</label>
-    <input type="text" id="name" name="name">
+    <label for="username">User name</label>
+    <input type="text" id="username" name="username">
     <label for="password">Password</label>
     <input type="password" id="password" name="password">
     <button type="submit">Login</button>
@@ -30,7 +30,15 @@ func indexPageHandler(response http.ResponseWriter, request *http.Request) {
 // login handler
 
 func loginHandler(response http.ResponseWriter, request *http.Request) {
-	http.Redirect(response, request, "/profile", 302)
+	username := request.FormValue("username")
+	password := request.FormValue("password")
+	redirectURL := "/"
+
+	if username != "" && password != "" {
+		redirectURL = "/profile"
+	}
+
+	http.Redirect(response, request, redirectURL, 302)
 }
 
 // logout handler
