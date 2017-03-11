@@ -40,6 +40,17 @@ func createSession(username string, response http.ResponseWriter) {
 	}
 }
 
+func destroySession(response http.ResponseWriter) {
+	cookie := &http.Cookie{
+		Name:   "session",
+		Value:  "",
+		Path:   "/",
+		MaxAge: -1,
+	}
+
+	http.SetCookie(response, cookie)
+}
+
 // index page
 
 const indexPage = `
@@ -78,6 +89,7 @@ func loginHandler(response http.ResponseWriter, request *http.Request) {
 // logout handler
 
 func logoutHandler(response http.ResponseWriter, request *http.Request) {
+	destroySession(response)
 	http.Redirect(response, request, "/", 302)
 }
 
